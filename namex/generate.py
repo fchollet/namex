@@ -139,6 +139,7 @@ def generate_api_files(package, code_directory="src", verbose=False):
         init_path = os.path.join(path, "__init__.py")
         if verbose:
             print(f"...writing {init_path}")
+        init_file_lines = sorted(init_file_lines)
         with open(init_path, "w") as f:
             contents = INIT_FILE_HEADER + "\n".join(init_file_lines) + "\n"
             f.write(contents)
