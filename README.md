@@ -33,9 +33,12 @@ keras_tuner_repo/
 ...... (etc)
 ```
 
-Then you can convert your codebase by calling
-`namex.convert_codebase(package="keras_tuner", code_directory="src")`
-(your working directory must be `keras_tuner_repo/`).
+Then you can convert your codebase by calling the following command
+(your working directory must be `keras_tuner_repo/`):
+
+```python
+namex.convert_codebase(package="keras_tuner", code_directory="src")
+```
 
 
 1. Add `@export()` calls in your code:
@@ -62,13 +65,17 @@ class HyperResNet:
     ...
 ```
 
-2. Call `namex.generate_api_files(package="keras_tuner", code_directory="src")`
-to generate API export files (your working directory must be `keras_tuner_repo/`).
+2. Call the following command to generate API export files
+(your working directory must be `keras_tuner_repo/`):
+
+```python
+namex.generate_api_files(package="keras_tuner", code_directory="src")
+```
 
 3. You can now build your package as usual -- your users will only see
 the symbols that you've explicitly exported, e.g. `keras_tuner.applications.HyperResNet`.
 
-The original symbols are "hidden away" in `keras_tuners.src`.
+The original symbols are "hidden away" in `keras_tuner.src`.
 
 ## Why use Namex?
 

@@ -28,15 +28,16 @@ def rewrite_python_file_imports(target_dir, root_name, offset_name, verbose=Fals
                 in_string = False
                 new_lines = []
                 for line in lines:
-                    if line.startswith('"""'):
-                        if line.count('"') == 3:
+                    if line.strip().startswith('"""') or line.strip().endswith('"""'):
+                        if line.count('"') % 2 == 1:
                             in_string = not in_string
                     else:
                         if not in_string:
                             # Imports starting from `root_name`.
                             if line.strip() == f"import {root_name}":
-                                line = (
-                                    f"import {root_name}.{offset_name} as {root_name}"
+                                line = line.replace(
+                                    f"import {root_name}",
+                                    f"import {root_name}.{offset_name} as {root_name}",
                                 )
                             line = line.replace(
                                 f"import {root_name}.",
