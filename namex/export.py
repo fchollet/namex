@@ -51,22 +51,18 @@ class export:
                     f"All `export_path` values should start with '{package}.'. "
                     f"Received: path={path}"
                 )
-            if "._" in p and "__internal__" not in p:
-                raise ValueError(
-                    "Invalid `export_path`: it contains a private entry. "
-                    f"Only paths such as `{package}.__internal__.*` can "
-                    "feature private entries. "
-                    f"Received: export_path={p}"
-                )
 
         self.package = package
         self.path = path
 
     def __call__(self, symbol):
-        if hasattr(symbol, "_api_export_path"):
+        if hasattr(symbol, "_api_export_path") and symbol._api_export_symbol_id == id(
+            symbol
+        ):
             raise ValueError(
                 f"Symbol {symbol} is already exported as '{symbol._api_export_path}'. "
                 f"Cannot also export it to '{self.path}'."
             )
         symbol._api_export_path = self.path
+        symbol._api_export_symbol_id = id(symbol)
         return symbol

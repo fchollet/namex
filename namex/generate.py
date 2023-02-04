@@ -72,10 +72,12 @@ def generate_api_files(package, code_directory="src", verbose=False):
     all_symbols = set()
     for module in modules:
         for name in dir(module):
-            if name.startswith("_"):
-                continue
             symbol = getattr(module, name)
             if not hasattr(symbol, "_api_export_path"):
+                continue
+            if symbol._api_export_symbol_id != id(symbol):
+                # This symbol is a non-exported subclass
+                # of an exported symbol.
                 continue
             if not all(
                 [
@@ -119,6 +121,7 @@ def generate_api_files(package, code_directory="src", verbose=False):
     for path, contents in init_files_content.items():
         os.makedirs(path, exist_ok=True)
         init_file_lines = []
+        modules_included = set()
         for symbol_metadata in contents:
             if "symbol" in symbol_metadata:
                 symbol = symbol_metadata["symbol"]
@@ -127,9 +130,11 @@ def generate_api_files(package, code_directory="src", verbose=False):
                     f"from {symbol.__module__} import {symbol.__name__} as {name}"
                 )
             elif "module" in symbol_metadata:
-                init_file_lines.append(
-                    f"from {'.'.join(path.split('/'))} import {symbol_metadata['module']}"
-                )
+                if symbol_metadata["module"] not in modules_included:
+                    init_file_lines.append(
+                        f"from {'.'.join(path.split('/'))} import {symbol_metadata['module']}"
+                    )
+                    modules_included.add(symbol_metadata["module"])
 
         init_path = os.path.join(path, "__init__.py")
         if verbose:
