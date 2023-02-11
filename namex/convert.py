@@ -39,6 +39,7 @@ def rewrite_python_file_imports(target_dir, root_name, offset_name, verbose=Fals
                                     f"import {root_name}",
                                     f"import {root_name}.{offset_name} as {root_name}",
                                 )
+                                continue
                             line = line.replace(
                                 f"import {root_name}.",
                                 f"import {root_name}.{offset_name}.",
