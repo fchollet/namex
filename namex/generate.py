@@ -126,9 +126,14 @@ def generate_api_files(package, code_directory="src", verbose=False):
             if "symbol" in symbol_metadata:
                 symbol = symbol_metadata["symbol"]
                 name = symbol_metadata["export_name"]
-                init_file_lines.append(
-                    f"from {symbol.__module__} import {symbol.__name__} as {name}"
-                )
+                if name == symbol.__name__:
+                    init_file_lines.append(
+                        f"from {symbol.__module__} import {name}"
+                    )
+                else:
+                    init_file_lines.append(
+                        f"from {symbol.__module__} import {symbol.__name__} as {name}"
+                    )
             elif "module" in symbol_metadata:
                 if symbol_metadata["module"] not in modules_included:
                     init_file_lines.append(
