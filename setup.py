@@ -11,5 +11,11 @@ setup(
     ),
     author="Francois Chollet",
     author_email="francois.chollet@gmail.com",
+    url="https://github.com/fchollet/namex",
+    license="Apache License 2.0",
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: Apache Software License",
+    ],
     packages=find_packages(),
 )
