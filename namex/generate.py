@@ -12,7 +12,7 @@ since your modifications would be overwritten.
 '''
 
 
-def generate_api_files(package, code_directory="src", verbose=False):
+def generate_api_files(package, code_directory="src", verbose=False, target_directory=None):
     """Writes out API export `__init__.py` files.
 
     Given a codebase structured as such:
@@ -95,6 +95,8 @@ def generate_api_files(package, code_directory="src", verbose=False):
             print(f"...processing symbol '{symbol.__name__}'")
         for export_path in to_list(symbol._api_export_path):
             export_modules = export_path.split(".")
+            if export_modules[0] == package and target_directory is not None:
+                export_modules = [export_modules[0], target_directory] + export_modules[1:]
             export_name = export_modules[-1]
             parent_path = os.path.join(*export_modules[:-1])
             if parent_path not in init_files_content:
