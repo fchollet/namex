@@ -11,5 +11,6 @@ setup(
     ),
     author="Francois Chollet",
     author_email="francois.chollet@gmail.com",
+    license="Apache License 2.0",
     packages=find_packages(),
 )
