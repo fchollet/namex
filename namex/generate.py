@@ -12,7 +12,13 @@ since your modifications would be overwritten.
 '''
 
 
-def generate_api_files(package, code_directory="src", verbose=False, target_directory=None):
+def generate_api_files(
+        package,
+        code_directory="src",
+        verbose=False,
+        target_directory=None,
+        exclude_directories=()
+):
     """Writes out API export `__init__.py` files.
 
     Given a codebase structured as such:
@@ -46,9 +52,14 @@ def generate_api_files(package, code_directory="src", verbose=False, target_dire
     if not os.path.exists(os.path.join(package, code_directory)):
         raise ValueError(f"No directory named '{package}/{code_directory}'.")
 
+    exclude_directories = [os.path.join(package, d) for d in exclude_directories]
+
     # Make list of all Python files (modules) to visit.
     codebase_walk_entry_points = []
-    for root, _, files in os.walk(os.path.join(package, code_directory)):
+    for root, dirs, files in os.walk(os.path.join(package, code_directory)):
+        if root in exclude_directories:
+            dirs.clear()
+            continue
         for fname in files:
             if fname == "__init__.py":
                 codebase_walk_entry_points.append(".".join(root.split("/")))
