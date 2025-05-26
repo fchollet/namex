@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name="namex",
-    version="0.0.9",
+    version="0.1.0",
     description=(
         "A simple utility to separate "
         "the implementation of your Python package "
