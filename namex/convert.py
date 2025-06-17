@@ -64,7 +64,7 @@ def convert_codebase(package, code_directory="src"):
     os.mkdir(package)
     shutil.move(code_directory, os.path.join(package, code_directory))
     rewrite_python_file_imports(
-        target_dir=package, root_name=package, offset_name="src", verbose=True
+        target_dir=package, root_name=package, offset_name=code_directory, verbose=True
     )
 
     # Create blank init file at root to make package detectable / importable.
